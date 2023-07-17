@@ -43,10 +43,10 @@ const app = async (projectPath, lng) => {
       return structureErrors;
     }
 
-    const indexPath = path.join(projectPath, 'index.html');
+    const baseUrl = 'http://localhost:3000';
     const viewport = { width: 1550, height: 1080 };
     const launchOptions = { args: ['--no-sandbox', '--disable-setuid-sandbox'] };
-    const { browser, page } = await launchBrowser(indexPath, { launchOptions, viewport });
+    const { browser, page } = await launchBrowser(baseUrl, { launchOptions, viewport });
     const errors = (await Promise.all([
       stylelint(projectPath),
       orderStyles(page, ['fonts.css', 'style.css']),
@@ -54,7 +54,7 @@ const app = async (projectPath, lng) => {
       titleEmmet(page),
       styles(path.join(projectPath, 'styles', 'style.css'), 'styles|style.css'),
       pseudoElements(path.join(projectPath, 'styles', 'style.css')),
-      compareLayout(indexPath, {
+      compareLayout(baseUrl, {
         canonicalImage: 'layout-canonical-1550.jpg',
         pageImage: 'layout-1550.jpg',
         outputImage: 'output-1550.jpg',
